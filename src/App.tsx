@@ -27,7 +27,10 @@ export default function App({ forceModal = null }: AppProps) {
     dialogFocusElement.current?.focus()
   }, [])
 
-  const closeModal = useCallback(() => setActiveModal(null), [])
+  const closeModal = useCallback(() => {
+    setActiveModal(null)
+    document.body.classList.remove('modal-active');
+  }, [])
   
   return (
     <Fragment>

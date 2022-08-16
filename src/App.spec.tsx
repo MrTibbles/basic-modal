@@ -25,7 +25,7 @@ describe('Modal UX', () => {
     const showModalButton = screen.getByText(/Let’s see a modal/)
     userEvent.click(showModalButton)
 
-    expect(screen.getByTestId(/I am in the modal/)).toBeInTheDocument()
+    expect(screen.getByText(/I am in the modal/)).toBeInTheDocument()
   })
 
   it('should allow the user to close the modal', () => {
@@ -49,7 +49,7 @@ describe('Modal UX', () => {
     
     const closeModalButton = screen.getByText(/Close/)
 
-    expect(screen.getByTestId(/I am in the modal/)).toBeInTheDocument()
+    expect(screen.getByText(/I am in the modal/)).toBeInTheDocument()
     expect(screen.queryByText(/I am in a different modal/)).not.toBeInTheDocument()
     
     userEvent.click(closeModalButton)
@@ -58,11 +58,11 @@ describe('Modal UX', () => {
     userEvent.click(showModal2Button)
 
     expect(screen.queryByText(/I am in the modal/)).not.toBeInTheDocument()
-    expect(screen.getByTestId(/I am in a different modal/)).toBeInTheDocument()
+    expect(screen.getByText(/I am in a different modal/)).toBeInTheDocument()
   })
 })
 
-describe.only('A11y', () => {
+describe('A11y', () => {
   it('should have no violations when modal is closed', async () => {
     const { baseElement } = render(<App />);
     const results = await axe(baseElement)
