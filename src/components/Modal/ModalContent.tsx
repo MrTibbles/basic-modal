@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
+import { Button } from '../Button'
+
 const ModalContentContainer = styled.div`
 /* Style it to cover the entire UI */
   position: fixed;
@@ -32,19 +34,35 @@ const ContentBackdrop = styled.span`
 
 const ContentInner = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 3rem;
   background-color: #ffffff;
   z-index: 150;
+  /* To make the content easier to read when displayed on small screens, the dialog fills 100% of the screen */
+  width: 100vw;
+  height: 100vh;
+
+  /* for larger screens we allow the content underneath to be viewable */
+  @media screen and (min-width: 500px) {
+    padding: 0;
+    width: 75vw;
+    height: 75vh;
+  }
 `
 
-const ModalContent: React.FC<{ children: ReactNode | Array<ReactNode>; }> = ({ children }) => (
-  <ModalContentContainer>
+interface ModalContentPRops {
+  children: ReactNode | Array<ReactNode>;
+  closeModal: () => void
+}
+
+const ModalContent: React.FC<ModalContentPRops> = ({ children, closeModal }) => (
+  <ModalContentContainer data-testid="modal-content">
     <ContentBackdrop />
     <ContentInner>
       {children}
-      <button>Close</button>
+      <Button background="red" onClick={closeModal}>Close</Button>
     </ContentInner>
   </ModalContentContainer>
 )

@@ -7,13 +7,29 @@ import { ModalContent } from './ModalContent'
 interface ModalProps {
   children: ReactNode | Array<ReactNode>;
   rootModal: RefObject<HTMLDivElement>;
+  closeModal: () => void;
+  dialogNumber?: number;
+}
+
+// create our containing element and add a11y attributes
+const createElement = (dialogNumber = 1) => {
+  const element = document.createElement('div')
+  element.setAttribute('role', 'dialog')
+  element.setAttribute('aria-label', `dialog${dialogNumber}_label`)
+  element.setAttribute('aria-describedby', `dialog${dialogNumber}_describedby`)
+
+  return element;
 }
 
 
-const Modal: React.FC<ModalProps> = ({ children, rootModal }) => {
+const Modal: React.FC<ModalProps> = ({
+  children,
+  rootModal,
+  closeModal,
+  dialogNumber
+}) => {
   // This container div will be used for rendering the children into
-  // TODO: ADD A11Y EFFORTS HERE
-  const container = useRef(document.createElement('div'))
+  const container = useRef(createElement(dialogNumber))
 
   // on component mount we append the child elements into the
   // root modal element in the DOM
@@ -27,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({ children, rootModal }) => {
   
   // render the passed child elements into the shared DOM element for displaying the content in the modal
   return createPortal(
-    ModalContent({ children }),
+    ModalContent({ children, closeModal }),
     container.current
   )
 }
